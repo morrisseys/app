@@ -4,7 +4,7 @@ entryPoints:
 certificatesResolvers:
   letsencrypt:
     acme:
-      email: ${ACME_EMAIL}
+      email: "steve@rmy.software"
       storage: /letsencrypt/acme.json
       httpChallenge: { entryPoint: web }
 api: { dashboard: true }
