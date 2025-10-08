@@ -32,10 +32,18 @@ services:
     depends_on: [ db ]
     labels:
       - traefik.enable=true
-      - traefik.http.routers.app.rule=Host(`uk.rmy.app`)
-      - traefik.http.routers.app.entrypoints=websecure
-      - traefik.http.routers.app.tls.certresolver=letsencrypt
+
+      # HTTPS router
+      - traefik.http.routers.app-https.rule=Host(`uk.rmy.app`)
+      - traefik.http.routers.app-https.entrypoints=websecure
+      - traefik.http.routers.app-https.tls.certresolver=letsencrypt
       - traefik.http.services.app.loadbalancer.server.port=8000
+
+      # HTTP router + redirect middleware
+      - traefik.http.routers.app-http.rule=Host(`uk.rmy.app`)
+      - traefik.http.routers.app-http.entrypoints=web
+      - traefik.http.routers.app-http.middlewares=redirect-to-https
+      - traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https
 
   admin:
     build: ./admin
