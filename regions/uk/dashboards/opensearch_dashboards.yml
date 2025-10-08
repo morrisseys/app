@@ -1,0 +1,11 @@
+server.host: "0.0.0.0"
+server.basePath: "/_reporting"
+server.rewriteBasePath: true
+
+opensearch.hosts: ["https://opensearch:9200"]
+opensearch.username: "admin"
+opensearch.password: "${OPENSEARCH_PASSWORD}"
+
+opensearch_security.auth.type: "proxy"
+opensearch_security.proxy.user_header: "x-proxy-user"
+opensearch_security.proxy.roles_header: "x-proxy-roles"
