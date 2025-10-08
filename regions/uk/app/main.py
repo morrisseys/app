@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.middleware.proxy_headers import ProxyHeadersMiddleware
 from routers import reporting
 
 app = FastAPI(title="RMY (UK) — AdminLTE")
