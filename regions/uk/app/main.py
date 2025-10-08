@@ -15,6 +15,17 @@ class SecurityHeaders(BaseHTTPMiddleware):
 
 app.add_middleware(SecurityHeaders)
 
+from starlette.middleware.base import BaseHTTPMiddleware
+
+class ForwardedProtoMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request, call_next):
+        xf_proto = request.headers.get("x-forwarded-proto")
+        if xf_proto:
+            request.scope["scheme"] = xf_proto  # make url_for use https
+        return await call_next(request)
+
+app.add_middleware(ForwardedProtoMiddleware)
+
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 app.state.templates = templates
