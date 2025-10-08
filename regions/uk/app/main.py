@@ -14,6 +14,7 @@ class SecurityHeaders(BaseHTTPMiddleware):
         return resp
 
 app.add_middleware(SecurityHeaders)
+app.add_middleware(ProxyHeadersMiddleware, trusted_hosts="*")
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
