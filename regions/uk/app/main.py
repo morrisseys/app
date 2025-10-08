@@ -2,7 +2,6 @@ from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.middleware.base import BaseHTTPMiddleware
-from starlette.middleware.proxy_headers import ProxyHeadersMiddleware
 from routers import reporting
 
 app = FastAPI(title="RMY (UK) — AdminLTE")
@@ -15,7 +14,6 @@ class SecurityHeaders(BaseHTTPMiddleware):
         return resp
 
 app.add_middleware(SecurityHeaders)
-app.add_middleware(ProxyHeadersMiddleware, trusted_hosts="*")
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
