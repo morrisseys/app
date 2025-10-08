@@ -10,5 +10,3 @@ app = FastAPI(title="RMY Controlplane")
 @app.get("/health")
 def health():
     return {"ok": True}
-
-# TODO: add routers for regions, tenant registry, routing, owner memberships

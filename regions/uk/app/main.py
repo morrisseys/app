@@ -1,12 +1,11 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.middleware.base import BaseHTTPMiddleware
 from routers import reporting
 
-app = FastAPI(title="RMY (UK)")
+app = FastAPI(title="RMY (UK) — AdminLTE")
 
-# Security headers for same-origin iframe
 class SecurityHeaders(BaseHTTPMiddleware):
     async def dispatch(self, request, call_next):
         resp = await call_next(request)
@@ -16,12 +15,15 @@ class SecurityHeaders(BaseHTTPMiddleware):
 
 app.add_middleware(SecurityHeaders)
 
-# Static & templates
 app.mount("/static", StaticFiles(directory="static"), name="static")
-app.state.templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory="templates")
+app.state.templates = templates
 
-# Routers
 app.include_router(reporting.router)
+
+@app.get("/")
+async def root(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request, "tenant": "example", "title": "Home"})
 
 @app.get("/health")
 async def health():
